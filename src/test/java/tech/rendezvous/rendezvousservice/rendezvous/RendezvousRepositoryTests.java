@@ -35,11 +35,17 @@ public class RendezvousRepositoryTests {
 
     private static String r2dbcUrl() {
         return String.format("r2dbc:postgresql://%s:%s/%s",
-                postgresql.getContainerIpAddress(),
+                postgresql.getHost(),
                 postgresql.getMappedPort(PostgreSQLContainer.POSTGRESQL_PORT),
                 postgresql.getDatabaseName());
     }
 
+    @Test
+    void findOrderByIdWhenNotExisting() {
+        StepVerifier.create(rendezvousRepository.findById(394L))
+                .expectNextCount(0)
+                .verifyComplete();
+    }
     @Test
     void createRejectedOrder() {
         var rejected = RendezvousService.buildRejectedRendezvous(12345456L, "R");

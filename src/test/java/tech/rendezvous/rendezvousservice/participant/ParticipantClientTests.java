@@ -35,7 +35,7 @@ public class ParticipantClientTests {
     }
 
     @Test
-    void whenOwnerExistsReturnRendezvous() {
+    void whenOwnerExistsThenReturnParticipant() {
         Long ownerId = 353534L;
 
         var mockResponse = new MockResponse()
@@ -55,5 +55,20 @@ public class ParticipantClientTests {
                 .expectNextMatches(
                         p -> p.id().equals(ownerId)
                 ).verifyComplete();
+    }
+
+    @Test
+    void whenOwnerNotExistsThenReturnEmpty() {
+        Long ownerId = 353535L;
+
+        var mockResponse = new MockResponse()
+                .addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON)
+                .setResponseCode(404);
+
+        mockWebServer.enqueue(mockResponse);
+
+        StepVerifier.create(participantClient.getParticipantById(ownerId))
+                .expectNextCount(0)
+                .verifyComplete();
     }
 }
