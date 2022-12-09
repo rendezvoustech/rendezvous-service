@@ -1,0 +1,14 @@
+rendezvous:
+  participant-service-uri: http://participant-service
+spring:
+  flyway:
+    url: jdbc:postgresql://rendezvous-postgres/rendezvousdb_order
+  r2dbc:
+    url: r2dbc:postgresql://rendezvous-postgres/rendezvousdb_order
+  rabbitmq:
+    host: rendezvous-rabbitmq
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ttp://rendezvous-keycloak/realms/RendezvousTech
